@@ -29,6 +29,5 @@ void GeneratePWM::createPWM(float dutyCycle){
     if (pwm > max_duty_){
         pwm = max_duty_;
     }
-    Serial.println(pwm);
     ledcWrite(_channel, pwm);
 }

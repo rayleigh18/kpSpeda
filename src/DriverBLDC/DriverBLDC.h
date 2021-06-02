@@ -7,7 +7,7 @@ class DriverBLDC{
     public:
     DriverBLDC(int dir, int brake, int pwm, int channel, int freq, int res);
 
-    void setupMotor();
+    void setup();
 
     
     bool isBrake; 

@@ -5,24 +5,26 @@ DriverBLDC::DriverBLDC(int dir, int brake, int pwm, int channel, int freq, int r
     
 }
 
-void DriverBLDC::setupMotor(){
+void DriverBLDC::setup(){
     _pwmHandler.setupPWM();
-    digitalWrite(_brake, 0);
-    digitalWrite(_dir, 0);
+    pinMode(_brake, OUTPUT);
+    pinMode(_dir, OUTPUT);
+    digitalWrite(_brake, 1);
+    digitalWrite(_dir, 1);
 }
 
 void DriverBLDC::inPWM(float dutyCycle){
-    digitalWrite(_brake, 0);
-    int isForward = 1;
+    digitalWrite(_brake, 1);
+    bool isForward = 1;
     if (dutyCycle < 0){
         isForward = 0;
     }
     digitalWrite(_dir, isForward);
-    _pwmHandler.createPWM(dutyCycle);
+    _pwmHandler.createPWM(fabs(dutyCycle));
 }
 
 void DriverBLDC::forceBrake(){
-    digitalWrite(_brake, 1);
+    digitalWrite(_brake, 0);
     _pwmHandler.createPWM(0);
     isBrake = 1;
 }
