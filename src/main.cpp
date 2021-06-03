@@ -13,7 +13,8 @@ float speed;
 void loop() {
   // put your main code here, to run repeatedly:
   int value = analogRead(13);
-  speed = 
-  motor.inPWM(1);
+  speed = (float)value/4095;
+  motor.inPWM(speed);
+  Serial.println(speed);
   delay(10);
 }
