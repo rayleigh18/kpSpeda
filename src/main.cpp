@@ -1,20 +1,21 @@
 #include <Arduino.h>
 
 #include "DriverBLDC/DriverBLDC.h"
+#include "getDataFromSerial.h"
+#include "HalBLDC/HalBLDC.h"
 
-DriverBLDC motor(21,22,23, 0, 5000, 8);
+#define HALL_PIN_A 21
+#define HALL_PIN_B 22
+#define HALL_PIN_C 23
+
+HalBLDC enc(HALL_PIN_A, HALL_PIN_B, HALL_PIN_C, 60);
+
 void setup() {
   // put your setup code here, to run once:
-  motor.setup();
   Serial.begin(9600);
+  enc.setup();
 }
-
-float speed;
 void loop() {
   // put your main code here, to run repeatedly:
-  int value = analogRead(13);
-  speed = (float)value/4095;
-  motor.inPWM(speed);
-  Serial.println(speed);
-  delay(10);
+  Serial.printf("%d %f\n",enc.getPulses(), enc.getRev());
 }
