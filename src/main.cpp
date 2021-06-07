@@ -8,7 +8,8 @@
 #define HALL_PIN_B 22
 #define HALL_PIN_C 23
 
-HalBLDC enc(HALL_PIN_A, HALL_PIN_B, HALL_PIN_C, 60);
+// 138 for sepeda, 60 for motor di meja
+HalBLDC enc(HALL_PIN_A, HALL_PIN_B, HALL_PIN_C, 138);
 
 void setup() {
   // put your setup code here, to run once:
