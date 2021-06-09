@@ -28,6 +28,7 @@ void recvWithStartEndMarkers() {
             else {
                 receivedChars[ndx] = '\0'; // terminate the string
                 recvInProgress = false;
+                strcpy(tempChars, receivedChars);
                 ndx = 0;
                 newData = true;
             }
@@ -38,9 +39,7 @@ void recvWithStartEndMarkers() {
 }
 
 void parseData() {      // split the data into its parts
-
-    char * strtokIndx; // this is used by strtok() as an index
-
     i = atoi(tempChars);     // convert this part to an integer
+    newData = false;
 
 }
