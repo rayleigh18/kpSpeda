@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <BluetoothSerial.h>
 bool newData = false;
 const byte numChars = 32;
 char receivedChars[numChars];
@@ -7,14 +8,14 @@ char tempChars[numChars];
 float speed;
 int i = 0;
 
-void recvWithStartEndMarkers() {
+void recvWithStartEndMarkers(BluetoothSerial *SerialBT) {
     static boolean recvInProgress = false;
     static byte ndx = 0;
     char endMarker = '\n';
     char rc;
 
-    while (Serial.available() > 0 && newData == false) {
-        rc = Serial.read();
+    while ((*SerialBT).available() > 0 && newData == false) {
+        rc = (*SerialBT).read();
         recvInProgress = true;
 
         if (recvInProgress == true) {
@@ -41,5 +42,4 @@ void recvWithStartEndMarkers() {
 void parseData() {      // split the data into its parts
     i = atoi(tempChars);     // convert this part to an integer
     newData = false;
-
 }
