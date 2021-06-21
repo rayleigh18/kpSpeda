@@ -34,6 +34,7 @@ float rpm_motor = 0;
 float rpm_cadence = 0;
 float last_rpm_cadence = 0;
 float speed_bike = 0;
+float rpm_last_motor = 0;
 
 int input = 0;
 #endif

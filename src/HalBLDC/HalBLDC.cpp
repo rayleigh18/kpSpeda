@@ -22,7 +22,7 @@ void HalBLDC::setup(){
     bool stateB = digitalRead(_pinB);
     bool stateC = digitalRead(_pinC);
 
-    curr_state = (stateA << 2) | (stateB | 1) | stateC;
+    curr_state = (stateA << 2) | (stateB << 1) | stateC;
     prev_state = curr_state;
 }
 

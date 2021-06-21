@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #define DEBUG
-#define BLUETOOTH_INPUT
+// #define BLUETOOTH_INPUT
 #include <BluetoothSerial.h>
 
 #include "DriverBLDC/DriverBLDC.h"
@@ -8,12 +8,15 @@
 #include "HalBLDC/HalBLDC.h"
 #include "CadenceSensor/CadenceSensor.h"
 #include "cadenceGetSpeed.h"
+#include "motorGetSpeed.h"
 #include "variable.h"
 #include "control.h"
 
+#include "SPIFFS.h"
 
 
-float rpm_last_motor = 0;
+
+
 void setup()
 {
   // put your setup codea here, to run once:
@@ -23,6 +26,16 @@ void setup()
   enc.setup();
   motor.setup();
   cad.setup();
+  if (!SPIFFS.begin(true)){
+    Serial.println("An Error has Occured while Mounting SPIFFS");
+    return;
+  }
+
+  File file = SPIFFS.open("/text.txt", FILE_WRITE);
+  if (!file){
+    Serial.println("There was an error opening the file for writing");
+    return;
+  }
 }
 void loop()
 {
@@ -34,19 +47,16 @@ void loop()
       parseData();
     #endif
 
-    #define CONST_MULT 0.01    
-      control();
-      motor.inPWM(speed);
+    controlDebug();
+    motor.inPWM(speed);
+
+
     time_sample_motor = millis();
   }
 
   if (millis() - time_sample_encoder > SAMP_ENC_MS)
   {
-    rpm_motor  = enc.getRev() * 1000 * 60 / SAMP_ENC_MS;
-    rpm_motor = 0.9*rpm_motor + 0.1 * rpm_last_motor;
-    rpm_last_motor = rpm_motor;
-    speed_bike = rpm_motor * R_RODA*60 /1000;
-    enc.reset();
+    motorGetSpeed();
     time_sample_encoder = millis();
   }
 
