@@ -1,6 +1,8 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
-
+#include "HalBLDC/HalBLDC.h"
+#include "CadenceSensor/CadenceSensor.h"
+#include "DriverBLDC/DriverBLDC.h"
 #define HALL_PIN_C 14
 #define HALL_PIN_B 12
 #define HALL_PIN_A 13
@@ -33,4 +35,5 @@ float rpm_cadence = 0;
 float last_rpm_cadence = 0;
 float speed_bike = 0;
 
+int input = 0;
 #endif

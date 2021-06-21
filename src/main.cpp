@@ -16,7 +16,7 @@
 float rpm_last_motor = 0;
 void setup()
 {
-  // put your setup code here, to run once:
+  // put your setup codea here, to run once:
   Serial.begin(115200);
   SerialBT.begin("ESP32Test"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
@@ -30,13 +30,13 @@ void loop()
   if (millis() - time_sample_motor > 50)
   {
     #ifdef BLUETOOTH_INPUT
-    recvWithStartEndMarkers(&SerialBT);
-    parseData();
+      recvWithStartEndMarkers(&SerialBT);
+      parseData();
     #endif
 
     #define CONST_MULT 0.01    
-    control();
-    motor.inPWM(speed);
+      control();
+      motor.inPWM(speed);
     time_sample_motor = millis();
   }
 
@@ -59,7 +59,7 @@ void loop()
   #ifdef DEBUG
   if (millis() - time_sample_print > 100)
   {
-    SerialBT.printf("%f %f %f %f\n", speed_bike, rpm_motor, speed, rpm_cadence);
+    SerialBT.printf("%f %f %f %f %d\n", speed_bike, rpm_motor, speed, rpm_cadence, input);
     // Serial.printf("%d\n",enc.getPulses());
     time_sample_print = millis();
   }

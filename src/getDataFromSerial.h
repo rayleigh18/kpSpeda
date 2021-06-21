@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <BluetoothSerial.h>
+#include "variable.h"
 bool newData = false;
 const byte numChars = 32;
 char receivedChars[numChars];
@@ -34,12 +35,11 @@ void recvWithStartEndMarkers(BluetoothSerial *SerialBT) {
                 newData = true;
             }
         }
-
-
     }
 }
 
 void parseData() {      // split the data into its parts
     i = atoi(tempChars);     // convert this part to an integer
+    input = i;
     newData = false;
 }
