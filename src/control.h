@@ -65,12 +65,6 @@ void control(){
 void controlDebug(){
     //for debug motor using input from serial
     speed = (float)i/50;
-    if (i == 1){
-      motor.inPWM(speed);
-    }
-    else{
-      motor.inPWM(0);
-    }
 }
 
 #endif

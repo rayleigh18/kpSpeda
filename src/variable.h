@@ -6,7 +6,7 @@
 #define HALL_PIN_C 14
 #define HALL_PIN_B 12
 #define HALL_PIN_A 13
-#define SAMP_ENC_MS 100
+#define SAMP_ENC_MS 500
 #define SAMP_CAD_MS 400
 #define R_RODA 0.6
 

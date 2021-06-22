@@ -7,14 +7,15 @@ void cadenceGetSpeed(){
     //   rpm_cadence = 0;
     // }
     // else{
-    rpm_cadence = cad.getPulses() * 1000 * 60 /((SAMP_CAD_MS - (millis() - last_time_cadence_intr))*12);
+    rpm_cadence = cad.getPulses() * 1000 * 60 /((SAMP_CAD_MS)*12);
+    cad.reset();
     if (rpm_cadence > 500){
         rpm_cadence = 500;
     }
     // }
     #define CONST_FILTER_CADENCE 0.9
     rpm_cadence = CONST_FILTER_CADENCE*rpm_cadence + (1-CONST_FILTER_CADENCE)*last_rpm_cadence;
-    cad.reset();
+    
     last_rpm_cadence = rpm_cadence;
 }
 
