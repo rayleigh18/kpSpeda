@@ -8,6 +8,7 @@
 #include "HalBLDC/HalBLDC.h"
 #include "CadenceSensor/CadenceSensor.h"
 #include "cadenceGetSpeed.h"
+#include "encGetSpeed.h"
 #include "variable.h"
 #include "control.h"
 
@@ -31,7 +32,6 @@ void loop()
   {
     #ifdef BLUETOOTH_INPUT
       recvWithStartEndMarkers(&SerialBT);
-      parseData();
     #endif
 
     #define CONST_MULT 0.01    
@@ -42,11 +42,7 @@ void loop()
 
   if (millis() - time_sample_encoder > SAMP_ENC_MS)
   {
-    rpm_motor  = enc.getRev() * 1000 * 60 / SAMP_ENC_MS;
-    rpm_motor = 0.9*rpm_motor + 0.1 * rpm_last_motor;
-    rpm_last_motor = rpm_motor;
-    speed_bike = rpm_motor * R_RODA*60 /1000;
-    enc.reset();
+    encGetSpeed();
     time_sample_encoder = millis();
   }
 
@@ -55,11 +51,10 @@ void loop()
     time_sample_cadence = millis();
   }
 
-
   #ifdef DEBUG
   if (millis() - time_sample_print > 100)
   {
-    SerialBT.printf("%f %f %f %f %d\n", speed_bike, rpm_motor, speed, rpm_cadence, input);
+    SerialBT.printf("%.3f %.3f %.3f %.3f %.3f\n", rpm_motor, speed, rpm_cadence, const_rpm,  const_pwm);
     // Serial.printf("%d\n",enc.getPulses());
     time_sample_print = millis();
   }

@@ -31,9 +31,15 @@ BluetoothSerial SerialBT;
 
 
 float rpm_motor = 0;
+float rpm_last_motor = 0;
+float accel_motor = 0;
 float rpm_cadence = 0;
 float last_rpm_cadence = 0;
+float accel_cadence = 0;
 float speed_bike = 0;
 
-int input = 0;
+float const_rpm = 750;
+float const_pwm = 0.1;
+
+float input = 0;
 #endif

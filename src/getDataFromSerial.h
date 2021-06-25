@@ -3,11 +3,17 @@
 #include "variable.h"
 bool newData = false;
 const byte numChars = 32;
+#define K_RPM_C 1
+#define K_RPM_P 2
+#define K_NONE 0
 char receivedChars[numChars];
 char tempChars[numChars];
 
+void parseData();
+void changeVariable();
 float speed;
-int i = 0;
+int type = 0;
+float i = 0;
 
 void recvWithStartEndMarkers(BluetoothSerial *SerialBT) {
     static boolean recvInProgress = false;
@@ -26,20 +32,40 @@ void recvWithStartEndMarkers(BluetoothSerial *SerialBT) {
                 if (ndx >= numChars) {
                     ndx = numChars - 1;
                 }
+                type = K_NONE;
             }
             else {
-                receivedChars[ndx] = '\0'; // terminate the string
-                recvInProgress = false;
-                strcpy(tempChars, receivedChars);
-                ndx = 0;
-                newData = true;
+                if (ndx > 0){
+                    if (receivedChars[ndx-1] == 'a'){
+                        type = K_RPM_C;
+                    }
+                    else{
+                        type = K_RPM_P;
+                    }
+                    receivedChars[ndx-1] = '\0'; // terminate the string
+                    recvInProgress = false;
+                    strcpy(tempChars, receivedChars);
+                    ndx = 0;
+                    newData = true;
+                    parseData();
+                    changeVariable();
+                }
             }
         }
     }
 }
 
 void parseData() {      // split the data into its parts
-    i = atoi(tempChars);     // convert this part to an integer
+    i = atof(tempChars);     // convert this part to an float
     input = i;
     newData = false;
+}
+
+void changeVariable(){
+    if (type == K_RPM_P){
+        const_pwm = input;
+    }
+    else if (type == K_RPM_C){
+        const_rpm = input;
+    }
 }

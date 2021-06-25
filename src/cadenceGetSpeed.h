@@ -3,18 +3,16 @@
 #include "variable.h"
 void cadenceGetSpeed(){
     float last_time_cadence_intr = cad.getLastTimeInterruptMs();
-    // if (last_time_cadence_intr < millis() -time_sample_cadence){
-    //   rpm_cadence = 0;
-    // }
-    // else{
+    cad.reset();
     rpm_cadence = cad.getPulses() * 1000 * 60 /((SAMP_CAD_MS - (millis() - last_time_cadence_intr))*12);
     if (rpm_cadence > 500){
         rpm_cadence = 500;
     }
-    // }
-    #define CONST_FILTER_CADENCE 0.9
+
+    #define CONST_FILTER_CADENCE 0.96
     rpm_cadence = CONST_FILTER_CADENCE*rpm_cadence + (1-CONST_FILTER_CADENCE)*last_rpm_cadence;
-    cad.reset();
+
+    accel_cadence = (rpm_cadence - last_rpm_cadence)*1000/SAMP_CAD_MS;
     last_rpm_cadence = rpm_cadence;
 }
 

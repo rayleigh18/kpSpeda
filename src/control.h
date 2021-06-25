@@ -12,9 +12,7 @@ double fastPow(double a, double b) {
     u.x[1] = (int)(b * (u.x[1] - 1072632447) + 1072632447);
     u.x[0] = 0;
     return u.d;
-}
-
- 
+} 
 
 void control(){
     // if (speed_bike > 10  || speed_bike < 0){
@@ -51,14 +49,29 @@ void control(){
 
     */
   
-  float max_pwm_input = (float)input/8;
+  // float max_pwm_input = (float)input/8;
 
-  speed = max_pwm_input;
-  if (speed < 0 || rpm_motor <= 1.0 || rpm_cadence <= 1){
+  // speed = max_pwm_input;
+  // if (speed < 0 || rpm_motor <= 1.0 || rpm_cadence <= 1){
+  //   speed = 0;
+  // }
+  // if (speed > MAX_PWM) {
+  //   speed = MAX_PWM;
+  // }
+
+  /* Cara 4
+
+  */
+  #define SPEED_0 50
+  if (speed < 0 || rpm_motor <= 1.0 || rpm_cadence <= 0.5){
     speed = 0;
   }
-  if (speed > MAX_PWM) {
-    speed = MAX_PWM;
+  else if (rpm_motor > SPEED_0){
+    float temp = (rpm_motor/const_rpm);
+    speed = temp*temp + 0.06;
+  }
+  else{
+    speed = const_pwm - (SPEED_0 - rpm_motor)*const_pwm/(SPEED_0);   // pwm start
   }
 }
 
