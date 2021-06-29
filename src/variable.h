@@ -20,6 +20,7 @@
 HalBLDC enc(HALL_PIN_A, HALL_PIN_B, HALL_PIN_C, 138);
 DriverBLDC motor(22, 23, 21, 0, 5000, 8);
 CadenceSensor cad(CADENCE,12);
+BluetoothSerial SerialBT;
 
 unsigned long time_sample_motor = 0;
 #ifdef DEBUG
@@ -27,7 +28,7 @@ unsigned long time_sample_print = 0;
 #endif
 unsigned long time_sample_encoder = 0;
 unsigned long time_sample_cadence = 0;
-BluetoothSerial SerialBT;
+
 
 
 float rpm_motor = 0;
@@ -39,10 +40,18 @@ float accel_cadence = 0;
 float bike_velo = 0;
 
 
-float rpm_batas_1 = 300;
+float rpm_batas_1 = 600;
+float rpm_batas_0 = 50;
 
 float const_rpm = 750;
 float const_pwm = 0.1;
 
+float max_delta_pwm = 0.1;
 float input = 0;
+
+float d_const = 350;
+float i_const = 0.24;
+float l_const = 10;
+float s_const = 0.5;
+float d2_const = 430;
 #endif

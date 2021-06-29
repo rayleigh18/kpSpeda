@@ -6,6 +6,11 @@ const byte numChars = 32;
 #define K_RPM_C 1
 #define K_RPM_P 2
 #define K_RPM_V1 3
+#define K_RPM_D 4
+#define K_RPM_I 5
+#define K_RPM_L 6
+#define K_RPM_S 7
+#define K_RPM_D2 8
 #define K_NONE 0
 char receivedChars[numChars];
 char tempChars[numChars];
@@ -37,14 +42,32 @@ void recvWithStartEndMarkers(BluetoothSerial *SerialBT) {
             }
             else {
                 if (ndx > 0){
-                    if (receivedChars[ndx-1] == 'a'){
+                    if (receivedChars[ndx-1] == 'c'){
                         type = K_RPM_C;
+                    }
+                    else if (receivedChars[ndx-1] == 'p'){
+                        type = K_RPM_P;
                     }
                     else if (receivedChars[ndx-1] == 'b'){
                         type = K_RPM_V1;
                     }
+                    else if (receivedChars[ndx-1] == 'd'){
+                        type = K_RPM_D;
+                    }
+                    else if (receivedChars[ndx-1] == 'i'){
+                        type = K_RPM_I;
+                    }
+                    else if (receivedChars[ndx-1] == 'l'){
+                        type = K_RPM_L;
+                    }
+                    else if (receivedChars[ndx-1] == 's'){
+                        type = K_RPM_S;
+                    }
+                    else if (receivedChars[ndx-1] == 'e'){
+                        type = K_RPM_D2;
+                    }
                     else{
-                        type = K_RPM_P;
+                        type = K_NONE;
                     }
                     receivedChars[ndx-1] = '\0'; // terminate the string
                     recvInProgress = false;
@@ -74,5 +97,25 @@ void changeVariable(){
     }
     else if (type == K_RPM_V1){
         rpm_batas_1 = input;
+    }
+    else if (type == K_RPM_D)
+    {
+        d_const = input;
+    }
+    else if (type == K_RPM_I)
+    {
+        i_const = input;
+    }
+    else if (type == K_RPM_L)
+    {
+        l_const = input;
+    }
+    else if (type == K_RPM_S)
+    {
+        s_const = input;
+    }
+    else if (type == K_RPM_D2)
+    {
+        d2_const = input;
     }
 }

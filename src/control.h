@@ -65,26 +65,59 @@ void control(){
   /* Cara 4
 
   */
-  #define rpm_batas_0 50
+
+  // if (pwm_in < 0 || rpm_motor <= 1.0 || rpm_cadence <= 2.0){
+  //   pwm_in = 0;
+  // }
+  // else if (rpm_motor > rpm_batas_1){
+  //   float temp = (rpm_motor/(const_rpm));
+  //   pwm_in = temp*temp + (50*rpm_batas_1 + 9*rpm_batas_0)*(50*rpm_batas_1 + 9*rpm_batas_0)/(22500*rpm_batas_0*rpm_batas_0);
+  // }
+  // else if (rpm_motor > rpm_batas_0){
+  //   float temp = (rpm_motor/const_rpm);
+  //   pwm_in = temp*temp + 0.06;
+  // }
+  // else if (accel_cadence > 50){
+  //   pwm_in = const_pwm - (rpm_batas_0 - rpm_motor)*const_pwm/(rpm_batas_0);   // pwm start
+  // }
+  // else{
+  //   pwm_in = 0;
+  // }
+
+  // if (pwm_in - last_pwm_in > max_delta_pwm){
+  //   pwm_in = last_pwm_in + max_delta_pwm;
+  // }
+
+  /* Cara 5
+
+  */
+    /* Cara 4
+
+  */
+
   if (pwm_in < 0 || rpm_motor <= 1.0 || rpm_cadence <= 2.0){
     pwm_in = 0;
   }
+  else if (accel_cadence > 10 && rpm_motor < rpm_batas_0){
+    pwm_in = const_pwm*(1 - (rpm_batas_0 - rpm_motor)/(rpm_batas_0));   // pwm start
+  }
   else if (rpm_motor > rpm_batas_1){
-    float temp = (rpm_motor/(1.5*const_rpm));
-    pwm_in = temp*temp + (50*rpm_batas_1 + 9*rpm_batas_0)*(50*rpm_batas_1 + 9*rpm_batas_0)/(22500*rpm_batas_0*rpm_batas_0);
+    float temp2 = rpm_batas_0/d_const;
+    float exp_atas = -1.0*(rpm_motor - d2_const)/d_const;
+    pwm_in = (2*temp2*(1 - fastPow(l_const, exp_atas))) + 0.06 + s_const;   // pwm start
   }
   else if (rpm_motor > rpm_batas_0){
-    float temp = (rpm_motor/const_rpm);
-    pwm_in = temp*temp + 0.06;
-  }
-  else if (accel_cadence > 50){
-    pwm_in = const_pwm - (rpm_batas_0 - rpm_motor)*const_pwm/(rpm_batas_0);   // pwm start
+    float temp = (rpm_motor/d_const);
+    pwm_in = i_const*temp*temp + 0.06;
   }
   else{
     pwm_in = 0;
   }
 
-  
+  if (pwm_in - last_pwm_in > max_delta_pwm){
+    pwm_in = last_pwm_in + max_delta_pwm;
+    last_pwm_in = pwm_in;
+  }
 }
 
 #endif

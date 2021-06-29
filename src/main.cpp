@@ -51,7 +51,9 @@ void loop()
   #ifdef DEBUG
   if (millis() - time_sample_print > 300)
   {
-    SerialBT.printf("%.3f %.3f %.3f %.3f %.3f %.3f\n", rpm_motor, pwm_in, rpm_cadence, const_rpm,  const_pwm, rpm_batas_1);
+    SerialBT.printf("%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", 
+    rpm_motor, rpm_cadence, pwm_in, const_rpm,  const_pwm, rpm_batas_1, d_const,
+    i_const, l_const, s_const, d2_const);
     // Serial.printf("%d\n",enc.getPulses());
     time_sample_print = millis();
   }
