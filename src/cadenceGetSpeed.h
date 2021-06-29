@@ -3,8 +3,9 @@
 #include "variable.h"
 void cadenceGetSpeed(){
     float last_time_cadence_intr = cad.getLastTimeInterruptMs();
-    cad.reset();
+    
     rpm_cadence = cad.getPulses() * 1000 * 60 /((SAMP_CAD_MS - (millis() - last_time_cadence_intr))*12);
+    cad.reset();
     if (rpm_cadence > 500){
         rpm_cadence = 500;
     }

@@ -5,13 +5,14 @@ bool newData = false;
 const byte numChars = 32;
 #define K_RPM_C 1
 #define K_RPM_P 2
+#define K_RPM_V1 3
 #define K_NONE 0
 char receivedChars[numChars];
 char tempChars[numChars];
 
 void parseData();
 void changeVariable();
-float speed;
+float pwm_in;
 int type = 0;
 float i = 0;
 
@@ -38,6 +39,9 @@ void recvWithStartEndMarkers(BluetoothSerial *SerialBT) {
                 if (ndx > 0){
                     if (receivedChars[ndx-1] == 'a'){
                         type = K_RPM_C;
+                    }
+                    else if (receivedChars[ndx-1] == 'b'){
+                        type = K_RPM_V1;
                     }
                     else{
                         type = K_RPM_P;
@@ -67,5 +71,8 @@ void changeVariable(){
     }
     else if (type == K_RPM_C){
         const_rpm = input;
+    }
+    else if (type == K_RPM_V1){
+        rpm_batas_1 = input;
     }
 }

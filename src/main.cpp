@@ -12,9 +12,6 @@
 #include "variable.h"
 #include "control.h"
 
-
-
-float rpm_last_motor = 0;
 void setup()
 {
   // put your setup codea here, to run once:
@@ -36,7 +33,7 @@ void loop()
 
     #define CONST_MULT 0.01    
       control();
-      motor.inPWM(speed);
+      motor.inPWM(pwm_in);
     time_sample_motor = millis();
   }
 
@@ -52,9 +49,9 @@ void loop()
   }
 
   #ifdef DEBUG
-  if (millis() - time_sample_print > 100)
+  if (millis() - time_sample_print > 300)
   {
-    SerialBT.printf("%.3f %.3f %.3f %.3f %.3f\n", rpm_motor, speed, rpm_cadence, const_rpm,  const_pwm);
+    SerialBT.printf("%.3f %.3f %.3f %.3f %.3f %.3f\n", rpm_motor, pwm_in, rpm_cadence, const_rpm,  const_pwm, rpm_batas_1);
     // Serial.printf("%d\n",enc.getPulses());
     time_sample_print = millis();
   }
