@@ -29,8 +29,6 @@ unsigned long time_sample_print = 0;
 unsigned long time_sample_encoder = 0;
 unsigned long time_sample_cadence = 0;
 
-
-
 float rpm_motor = 0;
 float rpm_last_motor = 0;
 float accel_motor = 0;
@@ -40,18 +38,17 @@ float accel_cadence = 0;
 float bike_velo = 0;
 
 
-float rpm_batas_1 = 600;
+float rpm_batas_1[3] = {213, 373, 566}; // equation d_const/1.4
+const float const_rpm_batas_1 = 0.7143;
 float rpm_batas_0 = 50;
 
-float const_rpm = 750;
-float const_pwm = 0.1;
+float const_pwm[3] = {0.1, 0.08, 0.05};
 
-float max_delta_pwm = 0.1;
+float max_delta_pwm = 0.05;
 float input = 0;
-
-float d_const = 350;
-float i_const = 0.24;
-float l_const = 10;
-float s_const = 0.5;
-float d2_const = 430;
+int mode = 0;
+float d_const[3]  = {350, 600, 900};
+float i_const[3]  = {1.36, 1.36, 1.36};
+float l_const[3]  = {51, 51, 51};
+float d2_const[3] = {0.4, 0.4, 0.4};
 #endif

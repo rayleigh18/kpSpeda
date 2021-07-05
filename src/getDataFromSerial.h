@@ -11,6 +11,7 @@ const byte numChars = 32;
 #define K_RPM_L 6
 #define K_RPM_S 7
 #define K_RPM_D2 8
+#define K_RPM_M 9
 #define K_NONE 0
 char receivedChars[numChars];
 char tempChars[numChars];
@@ -42,10 +43,7 @@ void recvWithStartEndMarkers(BluetoothSerial *SerialBT) {
             }
             else {
                 if (ndx > 0){
-                    if (receivedChars[ndx-1] == 'c'){
-                        type = K_RPM_C;
-                    }
-                    else if (receivedChars[ndx-1] == 'p'){
+                    if (receivedChars[ndx-1] == 'p'){
                         type = K_RPM_P;
                     }
                     else if (receivedChars[ndx-1] == 'b'){
@@ -60,11 +58,11 @@ void recvWithStartEndMarkers(BluetoothSerial *SerialBT) {
                     else if (receivedChars[ndx-1] == 'l'){
                         type = K_RPM_L;
                     }
-                    else if (receivedChars[ndx-1] == 's'){
-                        type = K_RPM_S;
-                    }
                     else if (receivedChars[ndx-1] == 'e'){
                         type = K_RPM_D2;
+                    }
+                    else if (receivedChars[ndx -1] == 'm'){
+                        type = K_RPM_M;
                     }
                     else{
                         type = K_NONE;
@@ -90,32 +88,30 @@ void parseData() {      // split the data into its parts
 
 void changeVariable(){
     if (type == K_RPM_P){
-        const_pwm = input;
-    }
-    else if (type == K_RPM_C){
-        const_rpm = input;
+        const_pwm[mode] = input;
     }
     else if (type == K_RPM_V1){
-        rpm_batas_1 = input;
+        rpm_batas_1[mode] = input;
     }
     else if (type == K_RPM_D)
     {
-        d_const = input;
+        d_const[mode] = input;
     }
     else if (type == K_RPM_I)
     {
-        i_const = input;
+        i_const[mode] = input;
     }
     else if (type == K_RPM_L)
     {
-        l_const = input;
-    }
-    else if (type == K_RPM_S)
-    {
-        s_const = input;
+        l_const[mode] = input;
     }
     else if (type == K_RPM_D2)
     {
-        d2_const = input;
+        d2_const[mode] = input;
+    }
+    else if (type == K_RPM_M){
+        int temps = (int)input;
+        temps = (temps%3);
+        mode = temps;
     }
 }

@@ -28,12 +28,10 @@ void loop()
   if (millis() - time_sample_motor > 50)
   {
     #ifdef BLUETOOTH_INPUT
-      recvWithStartEndMarkers(&SerialBT);
-    #endif
-
-    #define CONST_MULT 0.01    
-      control();
-      motor.inPWM(pwm_in);
+    recvWithStartEndMarkers(&SerialBT);
+    #endif   
+    control();
+    motor.inPWM(pwm_in);
     time_sample_motor = millis();
   }
 
@@ -49,14 +47,13 @@ void loop()
   }
 
   #ifdef DEBUG
-  if (millis() - time_sample_print > 300)
+  if (millis() - time_sample_print > 700)
   {
-    SerialBT.printf("%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", 
-    rpm_motor, rpm_cadence, pwm_in, const_rpm,  const_pwm, rpm_batas_1, d_const,
-    i_const, l_const, s_const, d2_const);
+    SerialBT.printf("%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %d\n", 
+    rpm_motor, rpm_cadence, pwm_in,  const_pwm[mode], d_const[mode],
+    i_const[mode], l_const[mode], d2_const[mode], mode);
     // Serial.printf("%d\n",enc.getPulses());
     time_sample_print = millis();
   }
-  // Serial.println(analogRead(CADENCE));
   #endif
 }
