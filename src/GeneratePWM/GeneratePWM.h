@@ -8,6 +8,7 @@ class GeneratePWM{
      * @param freq
      * @param res
      */
+
     GeneratePWM(int pin, int channel, int freq, int res);
 
     /** Setup pwm

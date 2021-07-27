@@ -1,4 +1,6 @@
+  
 #include <Arduino.h>
+
 #define DEBUG
 #define BLUETOOTH_INPUT
 #include <BluetoothSerial.h>
@@ -11,6 +13,9 @@
 #include "encGetSpeed.h"
 #include "variable.h"
 #include "control.h"
+
+const char *ssid = "ESPAyam";
+const char *password = "esppisang";
 
 void setup()
 {
@@ -52,6 +57,7 @@ void loop()
     SerialBT.printf("%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %d\n", 
     rpm_motor, rpm_cadence, pwm_in,  const_pwm[mode], d_const[mode],
     i_const[mode], l_const[mode], d2_const[mode], mode);
+    Serial.println("Check");
     // Serial.printf("%d\n",enc.getPulses());
     time_sample_print = millis();
   }
