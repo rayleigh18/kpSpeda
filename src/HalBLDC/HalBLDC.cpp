@@ -31,16 +31,12 @@ void HalBLDC::setup()
     {
         attachInterrupt(_pinC, HalBLDC::updateEncISR, CHANGE);
     }
-    bool stateA, stateB, stateC;
-    stateA = digitalRead(_pinA);
-    stateB = digitalRead(_pinB);
-    if (_mode == MODE_3)
-    {
-        stateC = digitalRead(_pinC);
-    }
 
+    bool stateA = digitalRead(_pinA);
+    bool stateB = digitalRead(_pinB);
     if (_mode == MODE_3)
     {
+        bool stateC = digitalRead(_pinC);
         curr_state = (stateA << 2) | (stateB | 1) | stateC;
     }
     else
@@ -76,16 +72,11 @@ void HalBLDC::updateEncISR()
 
 void HalBLDC::addPulseInInterrupt(void)
 {
-    bool stateA, stateB, stateC;
-    stateA = digitalRead(_pinA);
-    stateB = digitalRead(_pinB);
+    bool stateA = digitalRead(_pinA);
+    bool stateB = digitalRead(_pinB);
     if (_mode == MODE_3)
     {
-        stateC = digitalRead(_pinC);
-    }
-
-    if (_mode == MODE_3)
-    {
+        bool stateC = digitalRead(_pinC);
         // jika pengen hemat, Y = !E!A + !F!B + !D!C, dimana DEF adalah last state
         curr_state = (stateA << 2) | (stateB | 1) | stateC;
     }
@@ -128,7 +119,7 @@ void HalBLDC::addPulseInInterrupt(void)
                 change = -1;
             }
 
-            _pulses -= change;
+            
         }
     }
     _pulses += change;
