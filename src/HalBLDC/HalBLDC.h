@@ -2,11 +2,20 @@
 #define HALBLDC_H
 #include "Arduino.h"
 
+#define PREV_MASK 0x1 //Konstanta untuk mengetahui previous direction
+#define CURR_MASK 0x2 //Konstanta untuk mengetahui current direction
+#define INVALID   0x3 //XORing two states where both bits have changed.
+
 
 
 class HalBLDC {
 public :
-    HalBLDC(int pinA, int pinB, int pinC, int ppr);
+    typedef enum Mode{
+        MODE_2,
+        MODE_3
+    }Mode;
+
+    HalBLDC(int pinA, int pinB, int pinC, int ppr, Mode mode = MODE_3, bool isRev = false);
 
     void setup(void);
     void reset(void);
@@ -24,6 +33,8 @@ private:
     int _pinC;
     volatile int _pulses;
     int _ppr;
+    Mode _mode;
+    float _mult;
 
 };
 
