@@ -94,26 +94,34 @@ void control(){
     /* Cara 4
 
   */
- float temp = -1*rpm_motor / d_const[mode];
+  float temp = -1*rpm_motor / d_const[mode];
 
-  if (pwm_in < 0 || rpm_motor <= 1.0 || rpm_cadence <= 2.0){
-    pwm_in = 0;
-  }
-  else if (accel_cadence > 10 && rpm_motor < rpm_batas_0){
+// if (pwm_in < 0 || rpm_motor <= 1.0 || rpm_cadence <= 2.0){
+//     pwm_in = 0;
+//   }
+//   else 
+  if (accel_cadence > 10 && rpm_motor < rpm_batas_0){
     pwm_in = const_pwm[mode]*(1 - (rpm_batas_0 - rpm_motor)/(rpm_batas_0));   // pwm start
   }
   else if (rpm_motor > d_const[mode]*const_rpm_batas_1){
     float exp_atas = temp + d2_const[mode];
-    pwm_in = (1 - fastPow(l_const[mode], exp_atas));   // pwm start
+    pwm_in = (1 - fastPow(l_const[mode], exp_atas));   // pwm high speed
   }
   else if (rpm_motor > rpm_batas_0){
-    pwm_in = i_const[mode]*temp*temp + 0.06;
+    pwm_in = i_const[mode]*temp*temp + 0.06;  // pwm low speed
   }
   else{
     pwm_in = 0;
   }
-  
 
+  // jerk control
+  #define MAX_JERK_MOTOR 10
+  float kp_jerk_motor =  0.01;
+  if (jerk_motor > MAX_JERK_MOTOR){
+    pwm_in += kp_jerk_motor*(jerk_motor - MAX_JERK_MOTOR);
+  }
+  
+  
   if (pwm_in - last_pwm_in > max_delta_pwm){
     pwm_in = last_pwm_in + max_delta_pwm;
     last_pwm_in = pwm_in;
@@ -121,6 +129,9 @@ void control(){
 
   if (pwm_in > 1){
     pwm_in = 1;
+  }
+  else if (pwm_in < 0){
+    pwm_in = 0;
   }
 }
 
